@@ -1,0 +1,14 @@
+{"Tests":
+  [
+    {
+    "Testname":           "dummy",
+    "Maxurls":            12000,
+    "MaxGoRoutines":      15,
+    "Gomaxprocs":         1,
+    "ExpectFail":         false,
+    "JustOneDomain":      true,
+    "Urls":             [ "file:///home/ricky/Projects/Go/own/src/dummy/deep5.files4.dirs4/A.html"
+                        ]
+    }
+  ]
+}

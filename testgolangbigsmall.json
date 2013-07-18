@@ -1,0 +1,14 @@
+{"Tests":
+  [
+    {
+    "Testname":           "golangbigsmall",
+    "Maxurls":            1000,
+    "MaxGoRoutines":      15,
+    "Gomaxprocs":         1,
+    "ExpectFail":         false,
+    "JustOneDomain":      false,
+    "Urls":             [ "http://golang.org"
+                        ]
+    }
+  ]
+}

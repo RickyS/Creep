@@ -1,0 +1,649 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"objec",
+				"object_id"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "alias.bash",
+			"settings":
+			{
+				"buffer_size": 823,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "c1_test.go",
+			"settings":
+			{
+				"buffer_size": 5160,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/ricky/.config/sublime-text-2/Packages/User/Preferences.sublime-settings",
+			"settings":
+			{
+				"buffer_size": 1044,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/ricky/.config/sublime-text-2/Packages/Default/Preferences.sublime-settings",
+			"settings":
+			{
+				"buffer_size": 13150,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "creep.go",
+			"settings":
+			{
+				"buffer_size": 11394,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/usr/share/applications/sublime.desktop",
+			"settings":
+			{
+				"buffer_size": 476,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/ricky/.config/sublime-text-2/Packages/GoSublime/USAGE.md",
+			"settings":
+			{
+				"buffer_size": 7897,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/ricky/.config/sublime-text-2/Packages/User/Default (Linux).sublime-keymap",
+			"settings":
+			{
+				"buffer_size": 141,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/ricky/.config/sublime-text-2/Packages/Default/Default (Linux).sublime-keymap",
+			"settings":
+			{
+				"buffer_size": 31027,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "loadtestfile.go",
+			"settings":
+			{
+				"buffer_size": 1304,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "samedomain.go",
+			"settings":
+			{
+				"buffer_size": 784,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "testricky.json",
+			"settings":
+			{
+				"buffer_size": 334,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/Ruby/Ruby.sublime-build",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"GoSublime: ",
+				"GoSublime: Usage & Tips"
+			],
+			[
+				"Su",
+				"GoSublime: User Settings"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 467.0
+	},
+	"console":
+	{
+		"height": 181.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/ricky/Projects/Go/own/src/creep/creep.sublime-project",
+		"/home/ricky/.config/sublime-text-2/Packages/User/GoSublime.sublime-settings",
+		"/home/ricky/.config/sublime-text-2/Packages/User/GoSublime-Go.sublime-settings",
+		"/home/ricky/.config/sublime-text-2/Packages/Default/Distraction Free.sublime-settings",
+		"/home/ricky/.config/sublime-text-2/Packages/Package Control/Package Control.sublime-settings",
+		"/home/ricky/.config/sublime-text-2/Packages/User/Preferences.sublime-settings",
+		"/home/ricky/.config/sublime-text-2/Packages/User/Default (Linux).sublime-keymap",
+		"/home/ricky/.config/sublime-text-2/Packages/Default/Preferences.sublime-settings",
+		"/home/ricky/.config/sublime-text-2/Packages/GoSublime/creep.sublime-project",
+		"/home/ricky/.config/sublime-text-2/Packages/Ruby/Ruby.sublime-build",
+		"/home/ricky/Projects/Ruby/Noodle1/tax.rb",
+		"/home/ricky/.bash_aliases",
+		"/usr/bin/sublime-text-2",
+		"/usr/bin/sublime-text",
+		"/home/ricky/.config/sublime-text-2/Packages/Ruby/Default.sublime-keymap",
+		"/home/ricky/.config/sublime-text-2/Packages/Ruby/Miscellaneous.tmPreferences",
+		"/home/ricky/.config/sublime-text-2/Packages/Ruby/Ruby.tmLanguage",
+		"/home/ricky/Projects/Ruby/Noodle1/n.rb",
+		"/home/ricky/.config/sublime-text-2/Packages/User/JSON.sublime-settings",
+		"/home/ricky/.config/sublime-text-2/Packages/Default/Default (Linux).sublime-keymap",
+		"/opt/Sublime Text 2/Pristine Packages/Ruby.sublime-package",
+		"/home/ricky/subl.desktop",
+		"/home/ricky/defaults.list",
+		"/usr/share/applications/subl.desktop",
+		"/home/ricky/Projects/Ruby/Noodle1/Noodle1.sublime-project",
+		"/home/ricky/ToDo.txt",
+		"/home/ricky/.bashrc",
+		"/home/ricky/.bash_profile",
+		"/home/ricky/Sublime/Bash.sublime-project",
+		"/etc/apt/sources.list",
+		"/home/ricky/Documents/Email/ThunderInfo.txt",
+		"/home/ricky/.rvm/scripts/rvm",
+		"/home/ricky/Projects/Ruby/Noodle1/.rvmrc",
+		"/home/ricky/TheQuickBrownFox.txt",
+		"/home/ricky/Downloads/Clipit/clipit-1.4.2/configure",
+		"/home/ricky/Downloads/Google/InstallErrors.txt",
+		"/usr/share/X11/locale/armscii-8/XI18N_OBJS",
+		"/usr/share/X11/locale/armscii-8/Compose",
+		"/usr/share/X11/locale/am_ET.UTF-8/XI18N_OBJS",
+		"/usr/share/X11/locale/am_ET.UTF-8/Compose",
+		"/home/ricky/Email/Signature.html"
+	],
+	"find":
+	{
+		"height": 117.0
+	},
+	"find_in_files":
+	{
+		"height": 96.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"* HOW DO WE KNOW WHEN WE ARE DONE?\n * When the number of responses recvd matches the number of requests made?\n *   This would imply that the subsidiary pages (linked-to pages) need to make requests\n * before the response from the parent page is sent back to the requestor.  Out of order.\n * A proble",
+			"\n ",
+			" * Url requests sent along a request channel.\n * Responses with any errors sent back along a response channel.\n * A pool of worker goroutines is started to recv the requests, process them, and send responses back along\n",
+			"alias",
+			"build",
+			"project",
+			"=subl.",
+			"gedit.desktop",
+			"build",
+			"ctrl+b",
+			"clipit"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"subl.desktop"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 4,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "alias.bash",
+					"settings":
+					{
+						"buffer_size": 823,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								350,
+								350
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/ShellScript/Shell-Unix-Generic.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "c1_test.go",
+					"settings":
+					{
+						"buffer_size": 5160,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1071,
+								1071
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/GoSublime/syntax/GoSublime-Go.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/home/ricky/.config/sublime-text-2/Packages/User/Preferences.sublime-settings",
+					"settings":
+					{
+						"buffer_size": 1044,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								302,
+								302
+							]
+						],
+						"settings":
+						{
+							"rulers":
+							[
+								100
+							],
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/home/ricky/.config/sublime-text-2/Packages/Default/Preferences.sublime-settings",
+					"settings":
+					{
+						"buffer_size": 13150,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2481,
+								2481
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 793.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "creep.go",
+					"settings":
+					{
+						"buffer_size": 11394,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6930,
+								6930
+							]
+						],
+						"settings":
+						{
+							"rulers":
+							[
+								100
+							],
+							"syntax": "Packages/GoSublime/syntax/GoSublime-Go.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3586.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/usr/share/applications/sublime.desktop",
+					"settings":
+					{
+						"buffer_size": 476,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								353,
+								353
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/home/ricky/.config/sublime-text-2/Packages/GoSublime/USAGE.md",
+					"settings":
+					{
+						"buffer_size": 7897,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 780.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/home/ricky/.config/sublime-text-2/Packages/User/Default (Linux).sublime-keymap",
+					"settings":
+					{
+						"buffer_size": 141,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2,
+								2
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/home/ricky/.config/sublime-text-2/Packages/Default/Default (Linux).sublime-keymap",
+					"settings":
+					{
+						"buffer_size": 31027,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								13619,
+								13619
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "loadtestfile.go",
+					"settings":
+					{
+						"buffer_size": 1304,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/GoSublime/syntax/GoSublime-Go.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "samedomain.go",
+					"settings":
+					{
+						"buffer_size": 784,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/GoSublime/syntax/GoSublime-Go.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "testricky.json",
+					"settings":
+					{
+						"buffer_size": 334,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.9o:///home/ricky/Projects/Go/own/src/creep":
+	{
+		"height": 120.0
+	},
+	"output.GsDoc-output-output":
+	{
+		"height": 130.0
+	},
+	"output.exec":
+	{
+		"height": 30.0
+	},
+	"replace":
+	{
+		"height": 72.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"/home/ricky/.config/sublime-text-2/Packages/GoSublime/creep.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 147.0,
+	"status_bar_visible": true
+}

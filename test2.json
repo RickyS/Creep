@@ -1,0 +1,14 @@
+{"Tests":
+  [
+    {
+    "Testname":     "Good urls",
+    "Maxurls":             1200,
+    "MaxGoRoutines":          5,
+    "Gomaxprocs":             1,
+    "ExpectFail":         false,
+    "Urls":         [ "http://nationalinformationcenter.webatu.com/LiberatedEnglish.html"
+                    ]
+    }
+
+  ]
+}

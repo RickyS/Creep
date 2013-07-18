@@ -1,0 +1,24 @@
+{"Tests":
+  [
+    {
+    "Testname":     "Good urls",
+    "Maxurls":             1200,
+    "MaxGoRoutines":          5,
+    "Gomaxprocs":             1,
+    "ExpectFail":         false,
+    "Urls":         [ "http://json.org",
+                      "http://localhost:6060/pkg/encoding/gob/"
+                    ]
+    },
+    {
+    "Testname":       "Bad urls",
+    "Maxurls":               122,
+    "MaxGoRoutines":           5,
+    "Gomaxprocs":              1,
+    "ExpectFail":           true,
+    "Urls":         [ "xtp://golang.org",
+                      ""
+                    ]
+    }
+  ]
+}
