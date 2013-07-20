@@ -18,7 +18,7 @@ import (
 	"log"
 	"net/http"
 	"regexp"
-	"strings"
+	//"strings"
 	"sync"
 	"time"
 )
@@ -96,7 +96,7 @@ var reqChan chan *RequestUrl // Channel of requests from main program to this pa
 
 var fileClient *http.Client // For handling file:// urls.  Good for testing, mainly.
 
-var routineStatus []string // A status letter for the running-state of each goroutine.  For diagnosis.
+var routineStatus []rune // A status letter for the running-state of each goroutine.  For diagnosis.
 
 func init() {
 	// Bug: What if there is a newline in the "wrong" place?
@@ -131,7 +131,7 @@ func CreepWebSites(urls []string, maxPermittedUrls int, maxGoRo int, justOneDoma
 	synched.urlsFetched = 0
 	synched.dupsStopped = 0 // Don't need synchronization yet.  Not until goroutines.
 
-	routineStatus = make([]string, 1+maxGoRoutines) // Allocate the strings for diagnostic array.
+	routineStatus = make([]rune, 1+maxGoRoutines) // Allocate the strings for diagnostic array.
 
 	if 1 > len(urls) {
 		log.Fatal("No urls to process")
@@ -154,7 +154,7 @@ func CreepWebSites(urls []string, maxPermittedUrls int, maxGoRo int, justOneDoma
 	}
 	fmt.Printf(" Waiting:\n")
 	go waitUntilDone(reqChan)
-	routineStatus[0] = "x" // main entry pt returning caller: goroutines are started.
+	routineStatus[0] = 'x' // main entry pt returning caller: goroutines are started.
 	return respChan
 }
 
@@ -167,7 +167,7 @@ func waitUntilDone(reqChan chan *RequestUrl) {
 	fmt.Printf("Waited: req:resp %3d:%3d. %5d urls fetched, %5d in map, %5d dupes stopped, %5d rejected, at %v\n",
 		len(reqChan), len(respChan), synched.urlsFetched, mapLength(), synched.dupsStopped, synched.rejectCnt,
 		time.Since(startTime))
-	log.Println("go Status: ", strings.Join(routineStatus, ""))
+	log.Println("go Status: ", string(routineStatus))
 	close(reqChan)
 	time.Sleep(time.Second)
 	close(respChan)
@@ -186,14 +186,14 @@ func boolTF(george bool) string {
  * The number of such work routines is fixed at program startup time.
  */
 func getUrl(reqChan chan *RequestUrl, respChan chan *ResponseFromWeb, routineNumber int) {
-	routineStatus[routineNumber] = "0" // virgin.  No activity yet.
+	routineStatus[routineNumber] = '0' // virgin.  No activity yet.
 	for {
-		routineStatus[routineNumber] = "W" // Blocked waiting on request channel.
+		routineStatus[routineNumber] = 'W' // Blocked waiting on request channel.
 		theReq, ok := <-reqChan
 		if !ok {
 			break // request channel is closed.  Who closes this?  We do.  So won't happen here?
 		}
-		routineStatus[routineNumber] = "G" // Going
+		routineStatus[routineNumber] = 'G' // Going
 		thisUrl := theReq.Url
 
 		synched.Lock()
@@ -201,7 +201,7 @@ func getUrl(reqChan chan *RequestUrl, respChan chan *ResponseFromWeb, routineNum
 		synched.Unlock()
 
 		if killSelf {
-			routineStatus[routineNumber] = "K" // First killSelf — too many urls.
+			routineStatus[routineNumber] = 'K' // First killSelf — too many urls.
 			fmt.Printf("\t ->>1 Too many urls fetched %4d after %v\n", synched.urlsFetched, time.Since(startTime))
 			sendAllDone(routineNumber) // End-of-stream back to caller.
 			return
@@ -210,7 +210,7 @@ func getUrl(reqChan chan *RequestUrl, respChan chan *ResponseFromWeb, routineNum
 		goingCount++
 		reallyGetUrl(thisUrl, reqChan, respChan, routineNumber) // Do the bulk of the work.
 	}
-	routineStatus[routineNumber] = "X" // This goroutine is eXiting.
+	routineStatus[routineNumber] = 'X' // This goroutine is eXiting.
 }
 
 /* reallyGetUrl() is a not-strictly-necessary subroutine of getUrl that does most of the work.
@@ -236,7 +236,7 @@ func reallyGetUrl(thisUrl string, reqChan chan *RequestUrl, respChan chan *Respo
 		// been there, done that. Check the url, possibly for the 2nd time, if was Q'ed from a link.
 		synched.dupsStopped++
 		synched.Unlock()
-		routineStatus[routineNumber] = "D" // url rejected cause it's Duplicate.  Been there done that.
+		routineStatus[routineNumber] = 'D' // url rejected cause it's Duplicate.  Been there done that.
 		return
 	}
 
@@ -245,7 +245,7 @@ func reallyGetUrl(thisUrl string, reqChan chan *RequestUrl, respChan chan *Respo
 
 	if syUrlFetched > maxUrlsFetched {
 		synched.Unlock()
-		routineStatus[routineNumber] = "T" // Another case of too many urls.
+		routineStatus[routineNumber] = 'T' // Another case of too many urls.
 		fmt.Printf("\t ->>2 Too many urls fetched %4d after %v\n", syUrlFetched, time.Since(startTime))
 		sendAllDone(routineNumber) // End-of-stream back to caller.
 		return
@@ -268,7 +268,7 @@ func reallyGetUrl(thisUrl string, reqChan chan *RequestUrl, respChan chan *Respo
 	 *  This might not yield correct behavior if we terminate early?  Such as
 	 *  when exceeding number of urls allowed or any other resource constraint.
 	 */
-	routineStatus[routineNumber] = "F" // Begun Fetching from the web.
+	routineStatus[routineNumber] = 'F' // Begun Fetching from the web.
 	fmt.Printf("=Fetching=  '%s'\n", thisUrl)
 	start := time.Now()
 	getResponse, getErr := client.Get(thisUrl) // This can take a long time.  Hundreds of milliseconds.
@@ -282,7 +282,7 @@ func reallyGetUrl(thisUrl string, reqChan chan *RequestUrl, respChan chan *Respo
 	killit := syUrlFetch > maxUrlsFetched
 
 	if killit {
-		routineStatus[routineNumber] = "L" // Second attempt to killSelf because too many urls.
+		routineStatus[routineNumber] = 'L' // Second attempt to killSelf because too many urls.
 		fmt.Printf("=ENDING: after %5d: Too many urls fetched\n", syUrlFetch)
 		sendAllDone(routineNumber) // End-of-stream back to caller.
 	}
@@ -294,15 +294,15 @@ func reallyGetUrl(thisUrl string, reqChan chan *RequestUrl, respChan chan *Respo
 	}
 
 	if nil == getErr { // Send back the success, this page before the linked-to pages.
-		routineStatus[routineNumber] = "R" // Sending response back to caller.
+		routineStatus[routineNumber] = 'R' // Sending response back to caller.
 		sendResponse(thisUrl, getResponse, getErr, getElapsed)
-		routineStatus[routineNumber] = "S" // Sent response back to caller.
+		routineStatus[routineNumber] = 'S' // Sent response back to caller.
 
 		fmt.Printf("\n%35s: %s, stat %3d, len %3d, Elapsed %s\n", thisUrl, getResponse.Status,
 			getResponse.StatusCode, getResponse.ContentLength, getElapsed.String())
 		searchBodyForLinks(getResponse, reqChan, routineNumber) // Look for the later, linked-to pages.
 	} else { // Send back the error
-		routineStatus[routineNumber] = "E" // Send error response back to caller.
+		routineStatus[routineNumber] = 'E' // Send error response back to caller.
 		sendResponse(thisUrl, getResponse, getErr, getElapsed)
 	}
 
@@ -312,7 +312,7 @@ func reallyGetUrl(thisUrl string, reqChan chan *RequestUrl, respChan chan *Respo
 	// Bug: There is no way to guarantee against this waitGroup error, is there?
 
 	if killit {
-		routineStatus[routineNumber] = "N" // DONE because of too many urls.
+		routineStatus[routineNumber] = 'N' // DONE because of too many urls.
 		sendAllDone(routineNumber)         // End-of-stream back to caller.
 	}
 
@@ -324,7 +324,7 @@ func reallyGetUrl(thisUrl string, reqChan chan *RequestUrl, respChan chan *Respo
 // Send a special terminating message back along the response channel; After all urls are done.
 func sendAllDone(routineNumber int) {
 	fmt.Printf("SEND ALL DONE by %2d at delta %v\n", routineNumber, time.Since(startTime))
-	fmt.Println("go Status: ", strings.Join(routineStatus, ""))
+	fmt.Println("go Status: ", string(routineStatus))
 	respChan <- &ResponseFromWeb{"DONE", nil, nil, time.Duration(0)} // back to caller.
 }
 
@@ -341,7 +341,7 @@ func searchBodyForLinks(httpResp *http.Response, reqChan chan *RequestUrl, rn in
 		fmt.Println(getErr) // Really ought to recover from this.
 		return
 	}
-	routineStatus[rn] = "A" // Searching body for Anchor links to enQueue
+	routineStatus[rn] = 'A' // Searching body for Anchor links to enQueue
 	links := urlFindRe.FindAllStringSubmatch(string(body), -1)
 	//fmt.Printf("%3d links found\n", len(links))
 	for _, alink := range links {
@@ -377,7 +377,7 @@ func enQueue(thisUrl string, reqChan chan *RequestUrl, rn int) {
 		// been there, done that.
 		synched.dupsStopped++
 		synched.Unlock()
-		// routineStatus[routineNumber] = "d" // url rejected cause it's Duplicate.  Been there done that.
+		// routineStatus[routineNumber] = 'd' // url rejected cause it's Duplicate.  Been there done that.
 		return
 	}
 	synched.Unlock() // Write unlock ...
@@ -385,9 +385,9 @@ func enQueue(thisUrl string, reqChan chan *RequestUrl, rn int) {
 	if rejectThisUrl {
 		return
 	}
-	routineStatus[rn] = "C"              // enQueue blocked waiting on request channel.
+	routineStatus[rn] = 'C'              // enQueue blocked waiting on request channel.
 	reqChan <- &RequestUrl{Url: thisUrl} // Here's the beef; Put it on the channel.
-	routineStatus[rn] = "e"              // enQueue is returning.
+	routineStatus[rn] = 'e'              // enQueue is returning.
 }
 
 // get length of the list-of-urls map, with a synchronized read.
