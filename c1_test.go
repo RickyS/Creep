@@ -47,6 +47,7 @@ func monitor(t *testing.T) {
 
 	for {
 		synched.Lock() // Write lock shared data.
+		// Just copy the struct??
 		qC := synched.queueCnt
 		rJ := synched.rejectCnt
 		uC := urlCount
@@ -63,7 +64,7 @@ func monitor(t *testing.T) {
 		rr := fmt.Sprintf("%6d:%4d.", len(reqChan), len(respChan))
 		log.Printf("Gos: %3d, req:resp %s, Urls %4d, enQ %4d, avgLen %2.2f, avgDur %12v. stra %s, ml %4d\n",
 			runtime.NumGoroutine(), rr, urlCount, qC, avgLen, avgDur, straTF, mapLength())
-		log.Println("go Status: ", string(routineStatus))
+		showStatusOnLog()
 		counter++
 		if 10 > counter {
 			sleeper += 2
@@ -79,7 +80,7 @@ func monitor(t *testing.T) {
  * to be Get() okay), and urls that cannot succeed, so an error return is required.
  */
 func TestCreep(t *testing.T) {
-	jobData := LoadJobData("testiana.json") // Load test data into struct jobData. See loadtestfile.go
+	jobData := LoadJobData("testicann.json") // Load test data into struct jobData. See loadtestfile.go
 
 	go monitor(t)
 
@@ -125,7 +126,7 @@ OnceForEachResponse:
 			testnameDisplay := "'" + testname + "'"
 			t.Logf("Test Closed %12s: %4d urls Fetched, %4d dupes. Elapsed: %v, len (reqQ) %3d, resps: %3d\n\n",
 				testnameDisplay, synched.urlsFetched, synched.dupsStopped, sumElapsed, len(reqChan), urlCount)
-			t.Log("go Status: ", string(routineStatus))
+			showStatusOnLog()
 			showSummary(t)
 			return
 		}
@@ -135,7 +136,7 @@ OnceForEachResponse:
 			testnameDisplay := "'" + testname + "'"
 			t.Logf("Test Done %12s: %4d urls Fetched, %4d dupes. Elapsed: %v, len (reqQ) %3d, resps: %3d\n\n",
 				testnameDisplay, synched.urlsFetched, synched.dupsStopped, sumElapsed, len(reqChan), urlCount)
-			t.Log("go Status: ", string(routineStatus))
+			showStatusOnLog()
 			showSummary(t)
 			return
 		}
@@ -146,8 +147,8 @@ OnceForEachResponse:
 		}
 
 		sumElapsed += result.ElapsedTime
-		urlCount++
-		urlLength += len(result.Url)
+		urlCount++                   // Bug: Not properly synchronized.  Not that important, either.
+		urlLength += len(result.Url) // Bug: Same synchro problem.
 
 		if nil != result.HttpResponse {
 			sc := result.HttpResponse.StatusCode

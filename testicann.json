@@ -1,0 +1,15 @@
+{"Tests":
+  [
+    {
+    "Testname":           "icann.org",
+    "Maxurls":              9600,
+    "MaxGoRoutines":           15,
+    "Gomaxprocs":              3,
+    "ExpectFail":          false,
+    "JustOneDomain":       false,
+    "Urls":         [ "http://www.icann.org/"
+                    ]
+    }
+
+  ]
+}

@@ -32,6 +32,10 @@ import (
  * each link along the request channel.  We avoid fetching duplicates by keeping a hash (map) of
  * each url fetched.
  */
+
+/* Todo: <form action="http://gsa.icann.org/search" method="get">
+ */
+
 /*
  * HOW DO WE KNOW WHEN WE ARE DONE?
  * When the number of responses recvd matches the number of requests made?
@@ -113,14 +117,18 @@ func init() {
 // it an array of urls to process.
 func CreepWebSites(urls []string, maxPermittedUrls int, maxGoRo int, justOneDomain bool) <-chan *ResponseFromWeb {
 
-	startTime = time.Now()
 	maxUrlsFetched = maxPermittedUrls
 	just1Domain = justOneDomain
+
+	// map of urls to avoid duplicate fetch.
 	synched.beenThereDoneThat = make(map[string]bool, 20+maxUrlsFetched)
+	synched.urlsFetched = 0
+	synched.dupsStopped = 0 // Don't need synchronization yet.  Not until goroutines.
 
 	maxGoRoutines = maxGoRo
 	fmt.Printf(" Creeping: %2d maxUrlsFetched, %2d maxGoRoutines, %5d reqChanCapacity, %s justOneDomain.\n",
 		maxUrlsFetched, maxGoRoutines, reqChanCapacity, boolTF(just1Domain))
+	// Make some channels:
 	respChan = make(chan *ResponseFromWeb, 100)       // buffered
 	reqChan = make(chan *RequestUrl, reqChanCapacity) // Big buffer.  Enough?
 
@@ -128,24 +136,22 @@ func CreepWebSites(urls []string, maxPermittedUrls int, maxGoRo int, justOneDoma
 	// blocking means that the goroutine isn't running to finish jobs that would cause it to
 	// unblock.  Fatal embrace?
 
-	synched.urlsFetched = 0
-	synched.dupsStopped = 0 // Don't need synchronization yet.  Not until goroutines.
-
 	routineStatus = make([]rune, 1+maxGoRoutines) // Allocate the strings for diagnostic array.
 
 	if 1 > len(urls) {
 		log.Fatal("No urls to process")
 	}
 
+	startTime = time.Now()
 	for w := 0; w < maxGoRoutines; w++ { // Start the worker goroutines.
 		go getUrl(reqChan, respChan, 1+w)
 	}
 
+	setCurrentDomain(urls[0])
 	if just1Domain { // I think this is the only reasonable case that can actually terminate.
 		if 1 < len(urls) {
 			log.Fatal("For just-one-domain, must have just one starting url")
 		}
-		setCurrentDomain(urls[0])
 		enQueue(urls[0], reqChan, 0)
 	} else {
 		for _, thisurl := range urls { // For each url in the initial test list.
@@ -221,11 +227,11 @@ func getUrl(reqChan chan *RequestUrl, respChan chan *ResponseFromWeb, routineNum
  *  5. Search the response body for links that we ought to follow.
  */
 func reallyGetUrl(thisUrl string, reqChan chan *RequestUrl, respChan chan *ResponseFromWeb, routineNumber int) {
-	// in lieu of canonicalizing, remove trailing slash from thisUrl:
 	if 12 > len(thisUrl) {
 		fmt.Println("URL too short ", len(thisUrl), thisUrl)
 		return
 	}
+	// in lieu of canonicalizing, remove trailing slash from thisUrl:
 	if thisUrl[len(thisUrl)-1] == '/' {
 		thisUrl = thisUrl[0 : len(thisUrl)-1]
 		//fmt.Printf("=Deslashed= '%s'\n", thisUrl  )
@@ -325,7 +331,18 @@ func reallyGetUrl(thisUrl string, reqChan chan *RequestUrl, respChan chan *Respo
 func sendAllDone(routineNumber int) {
 	fmt.Printf("SEND ALL DONE by %2d at delta %v\n", routineNumber, time.Since(startTime))
 	fmt.Println("go Status: ", string(routineStatus))
+	showStatus()
 	respChan <- &ResponseFromWeb{"DONE", nil, nil, time.Duration(0)} // back to caller.
+}
+
+func showStatus() {
+	format := fmt.Sprintf("go Status: %%%ds. len(domainChan) %%3d\n", len(routineStatus))
+	fmt.Printf(format, string(routineStatus), len(domainChan))
+}
+
+func showStatusOnLog() {
+	format := fmt.Sprintf("go Status: %%%ds. len(domainChan) %%3d\n", len(routineStatus))
+	log.Printf(format, string(routineStatus), len(domainChan))
 }
 
 // Send the response to the 'caller' along the response channel.
@@ -350,24 +367,36 @@ func searchBodyForLinks(httpResp *http.Response, reqChan chan *RequestUrl, rn in
 	}
 }
 
-// Try to enQueue a url, see and count whether it is accepted or rejected.
+// Try to enQueue a url, see and count whether it is accepted or rejected according to our rules.
 // If okay, send it along the request channel.
 func enQueue(thisUrl string, reqChan chan *RequestUrl, rn int) {
-	var rejectThisUrl bool
-	rejectThisUrl = nil != urlRejectRe.FindStringIndex(thisUrl) // Don't follow *.css etc
+
+	rejectThisUrl := nil != urlRejectRe.FindStringIndex(thisUrl) // Don't follow *.css etc
+
+	// see samedomain.go
+	thisDomain := getDomain(thisUrl)
+	newDomain := thisDomain != currentDomain
+
 	if rejectThisUrl {
-		//fmt.Printf("REJECT1: '%s'\n", thisUrl) // Not a web page.
-	} else if just1Domain {
-		rejectThisUrl = !hasSameDomain(thisUrl)
-		// if rejectThisUrl {
-		// 	fmt.Printf("REJECT2: '%s'\n", thisUrl) // link goes offsite
-		// }
+		fmt.Printf("REJECT1: '%s'\n", thisUrl) // Not a web page.
+	} else {
+		if just1Domain {
+			rejectThisUrl = newDomain
+			if rejectThisUrl {
+				fmt.Printf("REJECT2: '%s'\n", thisUrl) // link goes offsite
+			}
+		} else if newDomain {
+			enQueueNewDomain(thisDomain, rn) // see samedomain.go
+			return
+		}
 	}
 
 	synched.Lock() // Write lock shared data.  There's just too much of this.
 
 	if rejectThisUrl {
 		synched.rejectCnt++
+		synched.Unlock() // Write unlock ...  This lock logicq is getting hairy.
+		return
 	} else {
 		synched.queueCnt++
 	}
@@ -377,14 +406,12 @@ func enQueue(thisUrl string, reqChan chan *RequestUrl, rn int) {
 		// been there, done that.
 		synched.dupsStopped++
 		synched.Unlock()
-		// routineStatus[routineNumber] = 'd' // url rejected cause it's Duplicate.  Been there done that.
+		routineStatus[rn] = 'd' // url rejected cause it's Duplicate.  Been there done that.
 		return
 	}
 	synched.Unlock() // Write unlock ...
+	fmt.Printf("enQueue '%s'\n", thisUrl)
 
-	if rejectThisUrl {
-		return
-	}
 	routineStatus[rn] = 'C'              // enQueue blocked waiting on request channel.
 	reqChan <- &RequestUrl{Url: thisUrl} // Here's the beef; Put it on the channel.
 	routineStatus[rn] = 'e'              // enQueue is returning.
