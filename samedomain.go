@@ -43,7 +43,7 @@ func enQueueNewDomain(thisDomain string, rn int) {
 		synchedDomainMap.domains[thisDomain] = true
 		synchedDomainMap.domainCnt++
 		synchedDomainMap.Unlock() // unlock before sending to channel.  Which could block.
-		log.Printf("\tenQueue new domain '%s'. len %3d\n", thisDomain, len(domainChan))
+		//log.Printf("\tenQueue new domain '%s'. len %3d\n", thisDomain, len(domainChan))
 		routineStatus[rn] = 'q' // Queue domain
 		domainChan <- thisDomain
 	} else {

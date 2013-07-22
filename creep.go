@@ -100,7 +100,10 @@ var reqChan chan *RequestUrl // Channel of requests from main program to this pa
 
 var fileClient *http.Client // For handling file:// urls.  Good for testing, mainly.
 
-var routineStatus []rune // A status letter for the running-state of each goroutine.  For diagnosis.
+var routineStatus []rune // A status letter for the running-state of each goroutine.  For diagnosis
+// and termination.
+
+const ExitCommandUrl string = "ExitExitExitExit" // Fake Url that tells goroutine to exit.
 
 func init() {
 	// Bug: What if there is a newline in the "wrong" place?
@@ -117,6 +120,14 @@ func init() {
 // it an array of urls to process.
 func CreepWebSites(urls []string, maxPermittedUrls int, maxGoRo int, justOneDomain bool) <-chan *ResponseFromWeb {
 
+	if nil == respChan {
+		respChan = make(chan *ResponseFromWeb, 100) // buffered
+	}
+	go reallyCreepWebSites(urls, maxPermittedUrls, maxGoRo, justOneDomain)
+	return respChan
+}
+
+func reallyCreepWebSites(urls []string, maxPermittedUrls int, maxGoRo int, justOneDomain bool) {
 	maxUrlsFetched = maxPermittedUrls
 	just1Domain = justOneDomain
 
@@ -129,14 +140,16 @@ func CreepWebSites(urls []string, maxPermittedUrls int, maxGoRo int, justOneDoma
 	fmt.Printf(" Creeping: %2d maxUrlsFetched, %2d maxGoRoutines, %5d reqChanCapacity, %s justOneDomain.\n",
 		maxUrlsFetched, maxGoRoutines, reqChanCapacity, boolTF(just1Domain))
 	// Make some channels:
-	respChan = make(chan *ResponseFromWeb, 100)       // buffered
 	reqChan = make(chan *RequestUrl, reqChanCapacity) // Big buffer.  Enough?
 
 	// TODO:   WHAT TO DO WHEN CHANNEL IS FULL:  STASH ON THE DISK??  Probably just block.  But
 	// blocking means that the goroutine isn't running to finish jobs that would cause it to
 	// unblock.  Fatal embrace?
 
-	routineStatus = make([]rune, 1+maxGoRoutines) // Allocate the strings for diagnostic array.
+	routineStatus = make([]rune, 1+maxGoRoutines) // Allocate the string for diagnostic array.
+	for i := 0; i < len(routineStatus); i++ {
+		routineStatus[i] = '-' // Uninitialized, no goroutines here yet.
+	}
 
 	if 1 > len(urls) {
 		log.Fatal("No urls to process")
@@ -159,24 +172,74 @@ func CreepWebSites(urls []string, maxPermittedUrls int, maxGoRo int, justOneDoma
 		}
 	}
 	fmt.Printf(" Waiting:\n")
-	go waitUntilDone(reqChan)
 	routineStatus[0] = 'x' // main entry pt returning caller: goroutines are started.
-	return respChan
-}
+	waitUntilDone()
 
-// Simply wait until all done.  I suppose we could do this with a special channel.
-// This is actually easier.  MAYBE NOT.
-func waitUntilDone(reqChan chan *RequestUrl) {
-	time.Sleep(10 * time.Second)
-	waitGroup.Wait()
-	sendAllDone(9999999) // If we ever decide to use 9,999,999 goroutines then this fails...
-	fmt.Printf("Waited: req:resp %3d:%3d. %5d urls fetched, %5d in map, %5d dupes stopped, %5d rejected, at %v\n",
-		len(reqChan), len(respChan), synched.urlsFetched, mapLength(), synched.dupsStopped, synched.rejectCnt,
-		time.Since(startTime))
-	log.Println("go Status: ", string(routineStatus))
+	// Now check channel of domains we've ignored until now.
+	ldc := len(domainChan)
+	for i := 0; i < ldc; i++ {
+		dom, ok := <-domainChan
+		if !ok {
+			break
+		}
+		fmt.Printf("Another domain: '%s'\n", dom)
+	}
+
+	waitUntilGoroutinesDead(reqChan)
+	sendAllDone(9999999)
 	close(reqChan)
 	time.Sleep(time.Second)
 	close(respChan)
+
+	return
+}
+
+// Simply wait until all Urls are done.  I suppose we could do this with a special channel.
+// This is actually easier.  MAYBE NOT.
+func waitUntilDone() {
+	time.Sleep(5 * time.Second)
+	waitGroup.Wait() // Wait until all Urls are processed.
+	fmt.Printf("Waited: done req:resp %3d:%3d. %5d urls fetched, %5d in map, %5d dupes stopped, %5d rejected, at %v\n",
+		len(reqChan), len(respChan), synched.urlsFetched, mapLength(), synched.dupsStopped, synched.rejectCnt,
+		time.Since(startTime))
+	//log.Println("go Status: ", string(routineStatus))
+}
+
+func waitUntilGoroutinesDead(reqChan chan *RequestUrl) {
+	// Then we wait until all goroutines are done.
+
+	// kill every worker goroutine
+	for i := 1; i < len(routineStatus); i++ {
+		// That is, once for each goroutine. --
+		// put an exit-goroutine status command on the request channel.
+		reqChan <- &RequestUrl{Url: ExitCommandUrl}
+	}
+	time.Sleep(900 * time.Millisecond)
+
+	var doneCnt int = 0
+	var blockedCnt int = 0
+	var doneLimit int = len(routineStatus) - 1 // Because of the extra element [0]
+	for (doneCnt + blockedCnt) < doneLimit {
+		time.Sleep(100 * time.Millisecond)
+		fmt.Printf("Wait for goroutines: ")
+		showStatus()
+		doneCnt = 0
+		blockedCnt = 0
+		for i := 1; i < len(routineStatus); i++ {
+			switch routineStatus[i] {
+			case 'X', 'K', 'L', 'N', 'T': // Exiting
+				doneCnt++
+			case 'q', 'C':
+				blockedCnt++ // This is observed when the channels are full.
+			default:
+			}
+		}
+	}
+
+	fmt.Printf("Waited: dead req:resp %3d:%3d. %5d urls fetched, %5d in map, %5d dupes stopped, %5d rejected, at %v\n",
+		len(reqChan), len(respChan), synched.urlsFetched, mapLength(), synched.dupsStopped, synched.rejectCnt,
+		time.Since(startTime))
+	//log.Println("go Status: ", string(routineStatus))
 }
 
 // Display a bool as a single letter, T or F.
@@ -193,14 +256,23 @@ func boolTF(george bool) string {
  */
 func getUrl(reqChan chan *RequestUrl, respChan chan *ResponseFromWeb, routineNumber int) {
 	routineStatus[routineNumber] = '0' // virgin.  No activity yet.
+outerLoop:
 	for {
+		for _, st := range []rune{'K', 'L', 'N', 'T', 'X'} {
+			if st == routineStatus[routineNumber] {
+				break outerLoop
+			}
+		}
 		routineStatus[routineNumber] = 'W' // Blocked waiting on request channel.
 		theReq, ok := <-reqChan
 		if !ok {
 			break // request channel is closed.  Who closes this?  We do.  So won't happen here?
 		}
-		routineStatus[routineNumber] = 'G' // Going
 		thisUrl := theReq.Url
+		if ExitCommandUrl == thisUrl { // "ExitExitExitExit"
+			//sendAllDone(routineNumber)
+			break
+		}
 
 		synched.Lock()
 		killSelf := synched.urlsFetched > maxUrlsFetched
@@ -209,14 +281,16 @@ func getUrl(reqChan chan *RequestUrl, respChan chan *ResponseFromWeb, routineNum
 		if killSelf {
 			routineStatus[routineNumber] = 'K' // First killSelf — too many urls.
 			fmt.Printf("\t ->>1 Too many urls fetched %4d after %v\n", synched.urlsFetched, time.Since(startTime))
-			sendAllDone(routineNumber) // End-of-stream back to caller.
+			//sendAllDone(routineNumber) // End-of-stream back to caller.
 			return
 		}
 
+		routineStatus[routineNumber] = 'G' // Going
 		goingCount++
 		reallyGetUrl(thisUrl, reqChan, respChan, routineNumber) // Do the bulk of the work.
 	}
-	routineStatus[routineNumber] = 'X' // This goroutine is eXiting.
+	routineStatus[routineNumber] = 'X' // This goroutine is eXiting.  req chan closed, or exit cmd.
+	return
 }
 
 /* reallyGetUrl() is a not-strictly-necessary subroutine of getUrl that does most of the work.
@@ -253,7 +327,7 @@ func reallyGetUrl(thisUrl string, reqChan chan *RequestUrl, respChan chan *Respo
 		synched.Unlock()
 		routineStatus[routineNumber] = 'T' // Another case of too many urls.
 		fmt.Printf("\t ->>2 Too many urls fetched %4d after %v\n", syUrlFetched, time.Since(startTime))
-		sendAllDone(routineNumber) // End-of-stream back to caller.
+		//sendAllDone(routineNumber) // End-of-stream back to caller.
 		return
 	}
 	synched.urlsFetched++ // Requires a write lock. It counts attempts that succeed or fail.
@@ -289,8 +363,13 @@ func reallyGetUrl(thisUrl string, reqChan chan *RequestUrl, respChan chan *Respo
 
 	if killit {
 		routineStatus[routineNumber] = 'L' // Second attempt to killSelf because too many urls.
-		fmt.Printf("=ENDING: after %5d: Too many urls fetched\n", syUrlFetch)
-		sendAllDone(routineNumber) // End-of-stream back to caller.
+		//fmt.Printf("=ENDING: after %5d: Too many urls fetched\n", syUrlFetch)
+		if (nil != getResponse) && (nil != getResponse.Body) {
+			getResponse.Body.Close()
+		}
+
+		return
+		//sendAllDone(routineNumber) // End-of-stream back to caller.
 	}
 
 	if (nil == getResponse) && (nil == getErr) {
@@ -319,7 +398,7 @@ func reallyGetUrl(thisUrl string, reqChan chan *RequestUrl, respChan chan *Respo
 
 	if killit {
 		routineStatus[routineNumber] = 'N' // DONE because of too many urls.
-		sendAllDone(routineNumber)         // End-of-stream back to caller.
+		//sendAllDone(routineNumber)         // End-of-stream back to caller.
 	}
 
 	if (nil != getResponse) && (nil != getResponse.Body) {
@@ -332,14 +411,17 @@ func sendAllDone(routineNumber int) {
 	fmt.Printf("SEND ALL DONE by %2d at delta %v\n", routineNumber, time.Since(startTime))
 	fmt.Println("go Status: ", string(routineStatus))
 	showStatus()
+
 	respChan <- &ResponseFromWeb{"DONE", nil, nil, time.Duration(0)} // back to caller.
 }
 
+//show status of each goroutine
 func showStatus() {
 	format := fmt.Sprintf("go Status: %%%ds. len(domainChan) %%3d\n", len(routineStatus))
 	fmt.Printf(format, string(routineStatus), len(domainChan))
 }
 
+//show status of each goroutine
 func showStatusOnLog() {
 	format := fmt.Sprintf("go Status: %%%ds. len(domainChan) %%3d\n", len(routineStatus))
 	log.Printf(format, string(routineStatus), len(domainChan))
@@ -378,12 +460,12 @@ func enQueue(thisUrl string, reqChan chan *RequestUrl, rn int) {
 	newDomain := thisDomain != currentDomain
 
 	if rejectThisUrl {
-		fmt.Printf("REJECT1: '%s'\n", thisUrl) // Not a web page.
+		//fmt.Printf("REJECT1: '%s'\n", thisUrl) // Not a web page.
 	} else {
 		if just1Domain {
 			rejectThisUrl = newDomain
 			if rejectThisUrl {
-				fmt.Printf("REJECT2: '%s'\n", thisUrl) // link goes offsite
+				//fmt.Printf("REJECT2: '%s'\n", thisUrl) // link goes offsite
 			}
 		} else if newDomain {
 			enQueueNewDomain(thisDomain, rn) // see samedomain.go
@@ -410,7 +492,7 @@ func enQueue(thisUrl string, reqChan chan *RequestUrl, rn int) {
 		return
 	}
 	synched.Unlock() // Write unlock ...
-	fmt.Printf("enQueue '%s'\n", thisUrl)
+	//fmt.Printf("enQueue '%s'\n", thisUrl)
 
 	routineStatus[rn] = 'C'              // enQueue blocked waiting on request channel.
 	reqChan <- &RequestUrl{Url: thisUrl} // Here's the beef; Put it on the channel.

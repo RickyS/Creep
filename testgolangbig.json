@@ -2,9 +2,9 @@
   [
     {
     "Testname":           "golangbig",
-    "Maxurls":            4000,
-    "MaxGoRoutines":      15,
-    "Gomaxprocs":         1,
+    "Maxurls":            8000,
+    "MaxGoRoutines":      25,
+    "Gomaxprocs":         4,
     "ExpectFail":         false,
     "JustOneDomain":      false,
     "Urls":             [ "http://golang.org"

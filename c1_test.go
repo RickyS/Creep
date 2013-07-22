@@ -80,7 +80,7 @@ func monitor(t *testing.T) {
  * to be Get() okay), and urls that cannot succeed, so an error return is required.
  */
 func TestCreep(t *testing.T) {
-	jobData := LoadJobData("testicann.json") // Load test data into struct jobData. See loadtestfile.go
+	jobData := LoadJobData("testgolangbig.json") // Load test data into struct jobData. See loadtestfile.go
 
 	go monitor(t)
 
@@ -102,6 +102,7 @@ func TestCreep(t *testing.T) {
 		doTest(t, &eachUt)
 	}
 	log.Printf("Test ending after %v simulating %v\n", time.Since(startTime), sumElapsed)
+	showStatusOnLog()
 }
 
 /*
@@ -192,4 +193,5 @@ func showSummary(t *testing.T) {
 		}
 	}
 	t.Logf("StatusCode Total: %5d\n", total)
+	t.Logf("Domain chan: %3d long.\n", len(domainChan))
 }
