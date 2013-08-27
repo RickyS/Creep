@@ -4,6 +4,22 @@
 		"selected_items":
 		[
 			[
+				"waitUn",
+				"waitUntilGoroutinesDead	 ƒ"
+			],
+			[
+				"jus",
+				"justOneDomain	bool ν"
+			],
+			[
+				"m",
+				"Millisecond	 Ɩ"
+			],
+			[
+				"rout",
+				"routineNumber	int ν"
+			],
+			[
 				"i",
 				"if	If Statement"
 			],
@@ -27,7 +43,7 @@
 			"file": "c1_test.go",
 			"settings":
 			{
-				"buffer_size": 6488,
+				"buffer_size": 6621,
 				"line_ending": "Unix"
 			}
 		},
@@ -35,15 +51,31 @@
 			"file": "creep.go",
 			"settings":
 			{
-				"buffer_size": 15665,
+				"buffer_size": 18401,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "testiana.json",
+			"file": "samedomain.go",
 			"settings":
 			{
-				"buffer_size": 305,
+				"buffer_size": 1743,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "testgolangbig.json",
+			"settings":
+			{
+				"buffer_size": 300,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "testicann.json",
+			"settings":
+			{
+				"buffer_size": 311,
 				"line_ending": "Unix"
 			}
 		},
@@ -56,28 +88,54 @@
 			}
 		},
 		{
-			"file": "samedomain.go",
-			"settings":
-			{
-				"buffer_size": 1146,
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "testricky.json",
 			"settings":
 			{
 				"buffer_size": 334,
 				"line_ending": "Unix"
 			}
+		},
+		{
+			"file": ".gitignore",
+			"settings":
+			{
+				"buffer_size": 45,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Package Control Messages\n========================\n\nSublimeLinter:\n-------------\n\n  SublimeLinter\n  =============\n  \n  SublimeLinter is a plugin that supports \"lint\" programs (known as \"linters\"). SublimeLinter highlights\n  lines of code the linter deems to contain (potential) errors. It also\n  supports highlighting special annotations (for example: TODO) so that they\n  can be quickly located.\n  \n  SublimeLinter has built in linters for the following languages:\n  \n  * C/C++ - lint via `cppcheck`\n  * CoffeeScript - lint via `coffee -s -l`\n  * CSS - lint via built-in [csslint](http://csslint.net)\n  * Git Commit Messages - lint via built-in module based on [A Note About Git Commit Messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).\n  * Haml - syntax check via `haml -c`\n  * HTML - lint via `tidy` (actually [tidy for HTML5](http://w3c.github.com/tidy-html5/))\n  * Java - lint via `javac -Xlint`\n  * JavaScript - lint via built in [jshint](http://jshint.org), [jslint](http://jslint.com), or the [closure linter (gjslint)](https://developers.google.com/closure/utilities/docs/linter_howto) (if installed)\n  * Lua - syntax check via `luac`\n  * Objective-J - lint via built-in [capp_lint](https://github.com/aparajita/capp_lint)\n  * Perl - lint via [Perl:Critic](http://perlcritic.com/) or syntax+deprecation check via `perl -c`\n  * PHP - syntax check via `php -l`\n  * Puppet - syntax check via `puppet parser validate`\n  * Python - native, moderately-complete lint\n  * Ruby - syntax check via `ruby -wc`\n  * XML - lint via `xmllint`\n  \n  \n  For more information:\n  ---------------------\n  Please take the time to read the documentation:\n  \n  * Online - https://github.com/SublimeLinter/SublimeLinter\n  * Sublime Text - Select Preferences->Package Settings->SublimeLinter->README\n  \n  \n  IMPORTANT\n  \n  Do NOT edit the default SublimeLinter settings. Your changes will be lost\n  when SublimeLinter is updated. ALWAYS edit the user SublimeLinter settings\n  by selecting \"Preferences->Package Settings->SublimeLinter->Settings - User\".\n  Note that individual settings you include in your user settings will **completely**\n  replace the corresponding default setting, so you must provide that setting in its entirety.\n  \n\n\nSublimeLinter:\n-------------\n\n  SublimeLinter 1.7.1 changelog\n  =============================\n  \n  CHANGES/FIXES\n  -------------\n  - Update JSLint to latest\n  - Update JSHint to v2.1.5\n  - Updated link to JSHint documentation\n  - Updated PEP8 to v1.4.6\n  - Updated Pyflakes to v0.7.3\n  - Gutter mark icons are now retina quality\n  - Included Gutter mark icon PSD (for tinkering :)\n  \n",
+			"settings":
+			{
+				"buffer_size": 2636,
+				"line_ending": "Unix",
+				"name": "Package Control Messages",
+				"scratch": true
+			}
 		}
 	],
 	"build_system": "Packages/Ruby/Ruby.sublime-build",
 	"command_palette":
 	{
-		"height": 392.0,
+		"height": 54.0,
 		"selected_items":
 		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"list",
+				"Package Control: List Packages"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"fetch",
+				"Fetch: Manage"
+			],
 			[
 				"gosu",
 				"GoSublime: New Go File"
@@ -95,7 +153,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 467.0
+		"width": 575.0
 	},
 	"console":
 	{
@@ -115,6 +173,9 @@
 	},
 	"file_history":
 	[
+		"/home/ricky/.cache/.fr-eF9q3E/README.md",
+		"/home/ricky/.config/sublime-text-3/Packages/GoSublime/CHANGELOG.md",
+		"/home/ricky/.config/sublime-text-3/Packages/User/Fetch.sublime-settings",
 		"/home/ricky/Projects/Go/own/src/rune.go",
 		"/home/ricky/.config/sublime-text-2/Packages/Default/Default (Linux).sublime-keymap",
 		"/home/ricky/.config/sublime-text-2/Packages/User/Default (Linux).sublime-keymap",
@@ -176,6 +237,18 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"'[KLNT]'",
+			"'[KLNT];",
+			"'K'",
+			"log",
+			"showStatusLog",
+			"showStatus",
+			"enQueue",
+			"hasSameDomain",
+			"hasSame",
+			"NewDomain",
+			"beenThereDoneThat",
+			"Lock",
 			"map",
 			"rejectThisUrl",
 			"enQueue",
@@ -205,9 +278,11 @@
 		"highlight": true,
 		"in_selection": false,
 		"preserve_case": false,
-		"regex": false,
+		"regex": true,
 		"replace_history":
 		[
+			"showStatusOnLog",
+			"showStatusLog",
 			"string(routineStatus)",
 			"'\\1'",
 			"'[\\1]'",
@@ -225,7 +300,7 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -241,8 +316,8 @@
 						"selection":
 						[
 							[
-								1019,
-								1054
+								348,
+								348
 							]
 						],
 						"settings":
@@ -263,15 +338,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6488,
+						"buffer_size": 6621,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1064,
-								1064
+								6616,
+								6616
 							]
 						],
 						"settings":
@@ -280,7 +355,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 132.0,
+						"translation.y": 2350.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -291,15 +366,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 15665,
+						"buffer_size": 18401,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4637,
-								4637
+								6543,
+								6543
 							]
 						],
 						"settings":
@@ -313,26 +388,87 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2205.0,
+						"translation.y": 3674.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "testiana.json",
+					"buffer": 2,
+					"file": "creep.go",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 305,
+						"buffer_size": 18401,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								224,
-								224
+								11603,
+								11603
+							]
+						],
+						"settings":
+						{
+							"rulers":
+							[
+								100
+							],
+							"syntax": "Packages/GoSublime/syntax/GoSublime-Go.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 7130.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "samedomain.go",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1743,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								960,
+								960
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/GoSublime/syntax/GoSublime-Go.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 676.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "testgolangbig.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 300,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								148,
+								148
 							]
 						],
 						"settings":
@@ -348,7 +484,36 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 5,
+					"file": "testicann.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 311,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								269,
+								269
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
 					"file": "loadtestfile.go",
 					"semi_transient": false,
 					"settings":
@@ -376,35 +541,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "samedomain.go",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1146,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								433,
-								433
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/GoSublime/syntax/GoSublime-Go.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 214.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 6,
+					"buffer": 7,
 					"file": "testricky.json",
 					"semi_transient": false,
 					"settings":
@@ -428,6 +565,60 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": ".gitignore",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 45,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								45,
+								45
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2636,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1568,
+								1568
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 308.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -469,6 +660,10 @@
 	"output.9o:///home/ricky/Projects/Go/own/src/creep":
 	{
 		"height": 120.0
+	},
+	"output.GoSublime-main-output":
+	{
+		"height": 142.0
 	},
 	"output.GsDoc-output-output":
 	{
@@ -518,7 +713,7 @@
 	"show_minimap": true,
 	"show_open_files": true,
 	"show_tabs": true,
-	"side_bar_visible": false,
+	"side_bar_visible": true,
 	"side_bar_width": 147.0,
 	"status_bar_visible": true,
 	"template_settings":
