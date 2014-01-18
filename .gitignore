@@ -4,3 +4,12 @@
 golang*/
 ianaEof/
 ricky/
+*sublime-workspace
+testdummy.*
+testricky.*
+ricky/
+golang/
+golangbig/
+golangbigOkay/
+golangbigsmallGood/
+*.geany
